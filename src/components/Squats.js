@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Pose } from "@mediapipe/pose";
 import * as cam from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
@@ -6,13 +6,14 @@ import { useRef } from "react";
 import angleBetweenThreePoints from "./angle";
 import { Button } from "@material-ui/core";
 
-import crunches from "../assets/images/crunches.png";
-
 import { Link } from "react-router-dom";
 import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import imgURL from "../assets/images/squats.png";
-
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { db } from "../firebase";
+import Cookies from "js-cookie";
 let count = 0;
 
 const speech = window.speechSynthesis;
@@ -257,7 +258,16 @@ const Squats = () => {
     console.log("clicked");
     count = 0;
   }
-
+  const handleClick = () => {
+    const ID = Cookies.get("userID");
+    const docRef = doc(db, `user/${ID}/squats`, uuidv4());
+    const repsCounter = setDoc(docRef, {
+      reps: count,
+      timeStamp: serverTimestamp(),
+      uid: ID,
+    });
+    console.log(repsCounter);
+  };
   return (
     <>
       <Container
@@ -360,6 +370,7 @@ const Squats = () => {
                   variant="contained"
                   color="primary"
                   sx={{ cursor: "pointer" }}
+                  onClick={handleClick}
                 >
                   back
                 </Button>

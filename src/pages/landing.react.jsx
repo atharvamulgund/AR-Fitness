@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Box, Typography, Button } from "@mui/material";
 import Header from "../components/header/header.react";
 import heroImg from "../assets/images/hero-section-arm.svg";
-import gif from "../assets/images/video.gif";
 import { Icon } from "@mui/material";
 import features from "../data/data";
 import about from "../assets/images/reminder.svg";
@@ -13,8 +12,17 @@ import user from "../assets/images/people02.png";
 import quotes from "../assets/images/quotes.svg";
 import { testimonial } from "../data/data";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+const Landing = () => {
+  const navigate = useNavigate();
 
-const landing = () => {
+  if (Cookies.get("userID")) {
+    navigate("/home");
+  } else {
+    navigate("/");
+  }
+
   return (
     <>
       <Header />
@@ -27,11 +35,23 @@ const landing = () => {
           alignItems: "center",
           height: "100vh",
           width: "100%",
-          marginTop: { xs: "2rem" },
-          flexDirection: { lg: "row", sm: "column", xs: "column" },
+          flexDirection: { lg: "row", sm: "row", xs: "column-reverse" },
+          position: "relative",
+          backgroundColor: "transparent",
         }}
-        gutterBottom
+        maxWidth="false"
       >
+        <Box
+          className="gradient__bg_down"
+          sx={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "-1",
+            width: "100%",
+            height: "100vh",
+          }}
+        />
         <Box
           sx={{
             display: "flex",
@@ -41,14 +61,15 @@ const landing = () => {
             height: "100vh",
             width: "100%",
             color: "#fff",
+            gap: "1rem",
           }}
         >
           <Typography
             variant="h5"
             color="secondary"
             sx={{
+              display: { lg: "flex", sm: "flex", xs: "none" },
               fontSize: "2rem",
-              padding: "0.5rem 1rem",
             }}
           >
             Get Fit Together!
@@ -58,7 +79,7 @@ const landing = () => {
             className="text-gradient"
             sx={{
               fontWeight: "bold",
-              fontSize: { lg: "6rem", sm: "6rem", xs: "4rem" },
+              fontSize: { lg: "6rem", sm: "4rem", xs: "2rem" },
             }}
           >
             Train <br />
@@ -67,13 +88,13 @@ const landing = () => {
           <Typography
             varient="h6"
             sx={{
-              fontSize: "1.5rem",
+              fontSize: { lg: "1.5rem", sm: "1rem" },
             }}
           >
             With our AI powered fitness app, it will guide you with the best
-            programto help you get a healthy and ideal body.
+            program to help you get a healthy and ideal body.
           </Typography>
-          <Link to="/register" className="link">
+          <Link to="/login" className="link">
             <Button variant="contained" color="secondary">
               Get Started
             </Button>
@@ -82,7 +103,7 @@ const landing = () => {
 
         <Box
           sx={{
-            width: "100%",
+            width: { lg: "80%", sm: "95%", xs: "100%" },
             height: { lg: "100%", xs: "100vh" },
             display: "flex",
             justifyContent: "center",
@@ -90,34 +111,66 @@ const landing = () => {
             zIndex: "1",
           }}
         >
-          <img src={heroImg} alt="gif" width="80%" />
+          <img src={heroImg} alt="gif" width="100%" />
         </Box>
+        <Typography
+          variant="h5"
+          color="secondary"
+          sx={{
+            display: { lg: "none", sm: "none", xs: "flex" },
+            fontSize: "2rem",
+            marginTop: { lg: "0", xs: "1rem" },
+          }}
+        >
+          Get Fit Together!
+        </Typography>
       </Container>
       {/* Features */}
       <Container
         sx={{
-          marginTop: { lg: "2rem", sm: "1rem", xs: "3rem" },
           display: "flex",
           justifyContent: { lg: "space-between", sm: "center", xs: "center" },
           alignItems: "center",
-          height: { lg: "100vh", xs: "100%" },
+          height: { lg: "100vh", sm: "100vh", xs: "100%" },
           width: "100%",
           flexDirection: { lg: "row", sm: "column", xs: "column" },
           color: "#fff",
           gap: "1rem",
+          position: "relative",
+          padding: { lg: "2rem", xs: "0" },
         }}
-        gutterBottom
+        maxWidth="false"
       >
+        <Box
+          className="gradient__bg_down"
+          sx={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "-1",
+            width: "100%",
+            height: { lg: "100vh", xs: "100%" },
+            rotate: "180deg",
+          }}
+        />
         <Box
           sx={{
             display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
             flexDirection: "column",
             gap: "2rem",
           }}
         >
           <Typography
             variant="h2"
-            sx={{ fontWeight: "bold" }}
+            sx={{
+              fontWeight: "bold",
+              textAlign: { lg: "left", sm: "center", xs: "center" },
+              fontSize: { lg: "6rem", sm: "4rem", xs: "1.5rem" },
+              width: "100%",
+              paddingTop: { lg: 0, xs: "2rem" },
+            }}
             className="text-gradient"
           >
             Why AR Fitness?
@@ -125,8 +178,9 @@ const landing = () => {
           <Typography
             variant="h6"
             sx={{
-              fontSize: "1.5rem",
-              width: { lg: "60%", sm: "100%", xs: "100%" },
+              fontSize: { lg: "1.5rem", sm: "1rem" },
+              width: { lg: "60%", sm: "80%", xs: "90%" },
+              textAlign: { lg: "left", sm: "center", xs: "center" },
             }}
           >
             You need to ensure your form is correct without the supervision of a
@@ -149,6 +203,8 @@ const landing = () => {
               sx={{
                 display: "flex",
                 columnGap: "1rem",
+                justifyContent: "center",
+                alignItems: "center",
                 width: { xs: "100%" },
               }}
               key={key}
@@ -161,12 +217,23 @@ const landing = () => {
                   display: "flex",
                   flexDirection: "column",
                   gap: "0.2rem",
+                  width: "100%",
                 }}
               >
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                <Typography
+                  variant="h5"
+                  color="secondary"
+                  sx={{
+                    fontWeight: "bold",
+                    fontize: { lg: "2rem", sm: "1.5rem", xs: "1rem" },
+                  }}
+                >
                   {feature.title}
                 </Typography>
-                <Typography variant="h6" sx={{ fontSize: "1rem" }}>
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: { lg: "1.5rem", sm: "1rem", xs: "0.8rem" } }}
+                >
                   {feature.description}
                 </Typography>
               </Box>
@@ -176,25 +243,39 @@ const landing = () => {
       </Container>
       {/* About */}
       <Container
+        id="about"
         sx={{
-          marginTop: { lg: "2rem", sm: "1rem", xs: "1rem" },
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: { lg: "100vh", xs: "100%" },
+          height: { lg: "100vh", sm: "100vh", xs: "100%" },
           width: "100%",
-          flexDirection: { lg: "row", sm: "column", xs: "column" },
+          flexDirection: { lg: "row", sm: "row", xs: "column" },
           color: "#fff",
+          position: "relative",
+          padding: { lg: "2rem", xs: "1rem" },
         }}
-        gutterBottom
+        maxWidth="false"
       >
+        <Box
+          className="gradient__bg_up"
+          sx={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "-1",
+            width: "100%",
+            height: { lg: "100vh", xs: "100%" },
+            rotate: "180deg",
+          }}
+        />
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "flex-start",
-            width: { lg: "50%", sm: "100%", xs: "100%" },
+            width: { lg: "50%", sm: "60%", xs: "100%" },
           }}
         >
           <img src={about} alt="about" width="100%"></img>
@@ -210,14 +291,25 @@ const landing = () => {
         >
           <Typography
             variant="h2"
-            sx={{ fontWeight: "bold" }}
+            sx={{
+              fontWeight: "bold",
+              textAlign: { lg: "left", sm: "center", xs: "center" },
+              fontSize: { lg: "6rem", sm: "4rem", xs: "2rem" },
+              width: "100%",
+              paddingTop: { lg: 0, xs: "2rem" },
+            }}
             className="text-gradient"
           >
             About Us
           </Typography>
           <Typography
             variant="h6"
-            sx={{ fontSize: { lg: "1.5rem", xs: "1rem" }, fontWeight: "100" }}
+            sx={{
+              fontSize: { lg: "1.5rem", xs: "1rem" },
+              fontWeight: "100",
+              textAlign: { lg: "left", sm: "center", xs: "justify" },
+              width: "100%",
+            }}
           >
             Our goal is to detect a person from a perfect side view and measure
             from neck to torso inclination to some reference axis. By monitoring
@@ -231,18 +323,36 @@ const landing = () => {
       </Container>
       {/* USP */}
       <Container
+        id="services"
         sx={{
-          marginTop: { lg: "2rem", sm: "1rem", xs: "5rem" },
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: {
+            lg: "space-between",
+            sm: "space-around",
+            xs: "center",
+          },
           alignItems: "center",
-          height: { lg: "100vh", xs: "100%" },
+          height: { lg: "100vh", sm: "100vh", xs: "100vh" },
           width: "100%",
-          flexDirection: { lg: "row-reverse", sm: "column", xs: "column" },
+          flexDirection: { lg: "row", sm: "column", xs: "column" },
           color: "#fff",
+          position: "relative",
+          gap: "2rem",
+          padding: { lg: "2rem", xs: "1rem" },
         }}
-        gutterBottom
+        maxWidth="false"
       >
+        <Box
+          className="gradient__bg_up"
+          sx={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "-1",
+            width: "100%",
+            height: { lg: "100vh", xs: "100%" },
+          }}
+        />
         <Box
           sx={{
             display: "flex",
@@ -265,7 +375,13 @@ const landing = () => {
         >
           <Typography
             variant="h2"
-            sx={{ fontWeight: "bold", fontSize: { lg: "4rem", xs: "2.5rem" } }}
+            sx={{
+              fontWeight: "bold",
+              textAlign: { lg: "left", sm: "center", xs: "center" },
+              fontSize: { lg: "6rem", sm: "4rem", xs: "1.5rem" },
+              width: "100%",
+              paddingTop: { lg: 0, xs: "2rem" },
+            }}
             className="text-gradient"
           >
             Automatic tracking
@@ -285,7 +401,6 @@ const landing = () => {
       {/* Testimonial */}
       <Container
         sx={{
-          marginTop: { xs: "6rem" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -293,8 +408,10 @@ const landing = () => {
           height: { lg: "100vh", xs: "100%" },
           width: "100%",
           gap: "5rem",
+          position: "relative",
+          padding: "2rem",
         }}
-        gutterBottom
+        maxWidth="false"
       >
         <Typography
           variant="h2"
@@ -307,6 +424,17 @@ const landing = () => {
         >
           Effective workouts at home without a personal trainer!
         </Typography>
+        <Box
+          className="gradient__bg_center"
+          sx={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "-1",
+            width: "100%",
+            height: { lg: "100vh", xs: "100%" },
+          }}
+        />
         <Box
           sx={{
             display: "flex",
@@ -391,4 +519,4 @@ const landing = () => {
   );
 };
 
-export default landing;
+export default Landing;

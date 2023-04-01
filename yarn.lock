@@ -10354,6 +10354,11 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-scroll-to-top@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/react-scroll-to-top/-/react-scroll-to-top-3.0.0.tgz"
+  integrity sha512-I/k45Ujai097du59tHBbzGxN7Lyc6K8Uc3IChq6HMXaBfB8N/rrfm055T5Yv0DWfVpf6pOFaBmhD3LOfH5unGw==
+
 react-service-worker@^0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/react-service-worker/-/react-service-worker-0.1.1.tgz"

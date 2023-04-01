@@ -88,7 +88,7 @@ const HomeHeader = () => {
           />
           <Link to="/Login" className="link" onClick={handleDrawerToggle}>
             <ListItemButton>
-              <Button variant="contained" color="secondary" onClick={logout()}>
+              <Button variant="contained" color="secondary" onClick={logout}>
                 Logout
               </Button>
             </ListItemButton>
@@ -177,11 +177,7 @@ const HomeHeader = () => {
                 <Button variant="h6">Workout</Button>
               </a>
               <Link to="/" className="link">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={logout()}
-                >
+                <Button variant="contained" color="secondary" onClick={logout}>
                   Logout
                 </Button>
               </Link>

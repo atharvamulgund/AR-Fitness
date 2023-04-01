@@ -134,3 +134,33 @@ body {
     width: 100%;
   }
 }
+.gradient__bg_down {
+  background: radial-gradient(
+    circle at 100% 100%,
+    #31009a 0%,
+    rgba(4, 12, 24, 1) 35%
+  );
+}
+.gradient__bg_up {
+  background: radial-gradient(
+    circle at 0% 100%,
+    #31009a 0%,
+    rgba(4, 12, 24, 1) 35%
+  );
+}
+
+.gradient__bg_center {
+  background: radial-gradient(
+    circle at 50% 50%,
+    #31009a 0%,
+    rgba(4, 12, 24, 1) 35%
+  );
+}
+
+.glassmorphism {
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}

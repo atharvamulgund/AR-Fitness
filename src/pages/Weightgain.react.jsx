@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 const Weightgain = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!Cookies.get("uat")) {
-      alert("Please Login");
-      navigate("/login");
-    }
-  }, []);
+
+  // if (!Cookies.get("uat")) {
+  //   alert("Please Login");
+  //   navigate("/login");
+  // }
+
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {

@@ -21,6 +21,7 @@
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "4.0.3",
+    "react-scroll-to-top": "^3.0.0",
     "react-service-worker": "^0.1.1",
     "react-speech-kit": "^3.0.1",
     "react-webcam": "^5.2.4",

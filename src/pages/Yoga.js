@@ -16,12 +16,12 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 const Yoga = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!Cookies.get("uat")) {
-      alert("Please Login");
-      navigate("/login");
-    }
-  }, []);
+
+  // if (!Cookies.get("uat")) {
+  //   alert("Please Login");
+  //   navigate("/login");
+  // }
+
   return (
     <>
       <HomeHeader />

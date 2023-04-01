@@ -11,21 +11,15 @@ import {
   Button,
   Divider,
   Container,
-  Typography,
-  Card,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import LogoWithText from "../../assets/images/logo-with-text.svg";
 
-const drawerWidth = `100%`;
+const drawerWidth = 240;
 
 const Header = () => {
-  const variants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, x: "-100%" },
-  };
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -55,9 +49,10 @@ const Header = () => {
                 xs: "flex-start",
               },
               alignItems: { md: "center", sm: "center", xs: "center" },
+              width: { lg: "100%", md: "100%", sm: "100%", xs: "100%" },
             }}
           >
-            <img src={LogoWithText} alt="logo" width="50%"></img>
+            <img src={LogoWithText} alt="logo" width="100%"></img>
           </Box>
         </Link>
 
@@ -66,25 +61,10 @@ const Header = () => {
             width: "60%",
           }}
         >
-          <a href="/" className="link" onClick={handleDrawerToggle}>
-            <ListItemButton>
-              <ListItemText primary="Home" />
-            </ListItemButton>
-          </a>
-          <a href="#features" className="link" onClick={handleDrawerToggle}>
-            <ListItemButton>
-              <ListItemText primary="Features" />
-            </ListItemButton>
-          </a>
-          <a href="#product" className="link" onClick={handleDrawerToggle}>
-            <ListItemButton>
-              <ListItemText primary="Product" />
-            </ListItemButton>
-          </a>
           <Divider
             color="#fff"
             sx={{
-              width: "50%",
+              width: "80%",
             }}
           />
           <Link to="/Login" className="link" onClick={handleDrawerToggle}>
@@ -131,7 +111,7 @@ const Header = () => {
               background: "primary",
             }}
           >
-            <IconButton
+            {/* <IconButton
               color="secondary"
               aria-label="open drawer"
               edge="start"
@@ -139,35 +119,45 @@ const Header = () => {
               sx={{ mr: 2, display: { lg: "none" } }}
             >
               <MenuIcon />
-            </IconButton>
-            <Link to="/">
-              <Box
-                sx={{
-                  display: { lg: "flex", md: "flex", sm: "flex", xs: "flex" },
-                  justifyContent: {
-                    md: "flex-start",
-                    sm: "flex-start",
-                    xs: "flex-start",
-                  },
-                  alignItems: { md: "center", sm: "center", xs: "center" },
-                }}
-              >
-                <img src={LogoWithText} alt="logo" width="50%"></img>
-              </Box>
-            </Link>
-            <Link to="/register" className="link">
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{
-                  display: { lg: "none", xs: "flex", md: "flex", sm: "flex" },
-                  width: "100%",
-                  fontSize: "15px",
-                }}
-              >
-                Register
-              </Button>
-            </Link>
+            </IconButton> */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Link to="/">
+                <Box
+                  sx={{
+                    display: { lg: "flex", md: "flex", sm: "flex", xs: "flex" },
+                    justifyContent: {
+                      md: "flex-start",
+                      sm: "flex-start",
+                      xs: "flex-start",
+                    },
+                    alignItems: { md: "center", sm: "center", xs: "center" },
+                    width: { lg: "50%", sm: "50%", xs: "80%" },
+                  }}
+                >
+                  <img src={LogoWithText} alt="logo" width="100%"></img>
+                </Box>
+              </Link>
+              <Link to="/login" className="link">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{
+                    display: { lg: "none", xs: "flex", md: "flex", sm: "flex" },
+                    width: "100%",
+                    fontSize: "15px",
+                  }}
+                >
+                  Login
+                </Button>
+              </Link>
+            </Box>
             <Box
               sx={{
                 display: { lg: "flex", xs: "none", md: "none", sm: "none" },
@@ -178,15 +168,6 @@ const Header = () => {
                 color: "#ffffff",
               }}
             >
-              <a href="/" className="link">
-                <Button variant="h6">Home</Button>
-              </a>
-              <a href="#about" className="link">
-                <Button variant="h6">About</Button>
-              </a>
-              <a href="#services" className="link">
-                <Button variant="h6">services</Button>
-              </a>
               <Link to="/login" className="link">
                 <Button variant="contained" color="secondary">
                   SignIn
@@ -196,7 +177,7 @@ const Header = () => {
           </Toolbar>
         </AppBar>
 
-        <Drawer
+        {/* <Drawer
           open={mobileOpen}
           onClose={handleDrawerToggle}
           sx={{
@@ -211,7 +192,7 @@ const Header = () => {
           }}
         >
           {drawer}
-        </Drawer>
+        </Drawer> */}
       </Box>
     </>
   );

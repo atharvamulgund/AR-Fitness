@@ -7,27 +7,21 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  List,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { homePageDiet } from "../data/data";
-import Home from "./Home";
+
 import HomeHeader from "../components/header/HomeHeader.react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const Diet = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!Cookies.get("uat")) {
-      alert("Please Login");
-      navigate("/login");
-    }
-  }, []);
+
+  // if (!Cookies.get("uat")) {
+  //   alert("Please Login");
+  //   navigate("/login");
+  // }
   return (
     <>
       <HomeHeader />

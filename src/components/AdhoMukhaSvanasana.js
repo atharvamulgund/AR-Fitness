@@ -9,6 +9,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { Container, Typography, Box } from "@mui/material";
 import HomeHeader from "./header/HomeHeader.react";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { db } from "../firebase";
+import Cookies from "js-cookie";
+const speech = window.speechSynthesis;
+const speak = (count) => {
+  const object = new SpeechSynthesisUtterance(count);
+  object.lang = "en-US";
+  speech.speak(object);
+};
 
 const AdhoMukhaSvanasana = () => {
   const webcamRef = useRef(null);
@@ -258,7 +268,7 @@ const AdhoMukhaSvanasana = () => {
 
       canvasCtx.fillStyle = "white";
       canvasCtx.font = "30px aerial";
-      canvasCtx.fillText(
+      const timer = canvasCtx.fillText(
         "Seconds holded: ".concat(
           String(Math.round((new Date().getTime() - t) / 1000))
         ),
@@ -267,6 +277,8 @@ const AdhoMukhaSvanasana = () => {
       );
 
       canvasCtx.restore();
+      speak(timer);
+      return timer;
     }
   }
 
@@ -299,7 +311,17 @@ const AdhoMukhaSvanasana = () => {
       camera.start();
     }
   });
-
+  const handleClick = () => {
+    const ID = Cookies.get("userID");
+    const userTime = onResult();
+    const docRef = doc(db, `user/${ID}/AdhoMukhaSvanasana`, uuidv4());
+    const repsCounter = setDoc(docRef, {
+      timer: userTime,
+      timeStamp: serverTimestamp(),
+      uid: ID,
+    });
+    console.log(repsCounter);
+  };
   return (
     <>
       <HomeHeader />
@@ -325,6 +347,7 @@ const AdhoMukhaSvanasana = () => {
           <Webcam ref={webcamRef} className="full-width" />
           <canvas
             ref={canvasRef}
+            className="full-width"
             style={{
               position: "absolute",
               width: "100%",
@@ -356,6 +379,20 @@ const AdhoMukhaSvanasana = () => {
           >
             <img src={yoga1} alt="Yoga 2" width="100%"></img>
           </Box>
+          <Link
+            to="/workout"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            <Button
+              size="large"
+              variant="contained"
+              color="secondary"
+              sx={{ cursor: "pointer" }}
+              onClick={handleClick}
+            >
+              back
+            </Button>
+          </Link>
         </Box>
       </Container>
     </>

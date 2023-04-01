@@ -10,9 +10,18 @@ import {
   CardMedia,
 } from "@mui/material";
 import HomeHeader from "../components/header/HomeHeader.react";
-import { WorkoutVariation, YogaVariation } from "../data/data";
-
+import { WorkoutVariation } from "../data/data";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 const Workout = () => {
+  const navigate = useNavigate();
+
+  if (!Cookies.get("uat")) {
+    alert("Please Login");
+    navigate("/login");
+  }
+
   return (
     <>
       <HomeHeader />

@@ -14,7 +14,12 @@ const Trikonasana = () => {
   let camera = null;
 
   var t = new Date().getTime();
-
+  const speech = window.speechSynthesis;
+  const speak = (count) => {
+    const object = new SpeechSynthesisUtterance(count);
+    object.lang = "en-US";
+    speech.speak(object);
+  };
   function onResult(results) {
     if (results.poseLandmarks) {
       const position = results.poseLandmarks;
@@ -142,7 +147,7 @@ const Trikonasana = () => {
 
       canvasCtx.font = "30px aerial";
       canvasCtx.fillStyle = "white";
-      canvasCtx.fillText(
+      const timer = canvasCtx.fillText(
         "Seconds holded: ".concat(
           String(Math.round((new Date().getTime() - t) / 1000))
         ),
@@ -151,6 +156,7 @@ const Trikonasana = () => {
       );
 
       canvasCtx.restore();
+      speak(timer);
     }
   }
 
@@ -205,12 +211,11 @@ const Trikonasana = () => {
             width: "100%",
           }}
         >
-          <Webcam ref={webcamRef} className="full-width" />
+          <Webcam ref={webcamRef} />
           <canvas
             ref={canvasRef}
             style={{
               position: "absolute",
-              width: "100%",
             }}
           />
         </Box>

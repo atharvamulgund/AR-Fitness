@@ -3,22 +3,11 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
 import Cookies from "js-cookie";
-import {
-  setDoc,
-  doc,
-  serverTimestamp,
-  addDoc,
-  collection,
-  getFirestore,
-} from "firebase/firestore";
+import { setDoc, doc, serverTimestamp, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -35,69 +24,31 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-// Google Login
 export const signInWithGoogle = async () => {
   try {
     const googleProvider = new GoogleAuthProvider();
     const res = await signInWithPopup(auth, googleProvider);
+
     const accessToken = res.user.accessToken;
-    const uid = res.user.uid;
-
-    const profile = {
-      name: res.user.displayName,
-      email: res.user.email,
-      photoUrl: res.user.photoURL,
-      userID: res.user.uid,
-    };
-    // // console.log(profile);
-    // const docRef = doc(db, `users/${uid}`);
-    // const userData = await setDoc(docRef, profile);
-    await addDoc(collection(db, "users"), profile);
-    // console.log(userData);
-    Cookies.set("uat", accessToken, { expires: 2 });
-    localStorage.setItem("uat", accessToken);
-    Cookies.set("profile", JSON.stringify(profile), { expires: 2 });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// Email Login
-export const logInWithEmailAndPassword = async (email, password) => {
-  try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    // console.log(res);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
-// Register a user
-export const registerWithEmailAndPassword = async (name, email, password) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    console.log(user.uid);
-
-    await setDoc(doc(db, "user", user.uid), {
-      id: user.uid,
-      // name
-      // authProvider: "local",
-      //  email,
-      // password: password,
-      // createdAt: serverTimestamp(),
+    Cookies.set("uat", accessToken);
+    const uid = res.user.uid.toString();
+    Cookies.set("userID", uid);
+    const docRef = doc(db, "user", uid);
+    await setDoc(docRef, {
+      userID: uid,
+      timeStamp: serverTimestamp(),
     });
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
-
-//   Reset Password
-export const sendPasswordReset = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
+    // const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    // const docs = await getDocs(q);
+    // if (docs.docs.length === 0) {
+    //   await addDoc(collection(db, "users"), {
+    //     uid: user.uid,
+    //     name: user.displayName,
+    //     authProvider: "google",
+    //     email: user.email,
+    //     timeStamp: serverTimestamp(),
+    //   });
+    // }
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -108,4 +59,6 @@ export const sendPasswordReset = async (email) => {
 export const logout = () => {
   signOut(auth);
   localStorage.clear();
+  Cookies.remove("userID");
+  Cookies.remove("uat");
 };

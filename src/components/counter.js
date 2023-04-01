@@ -11,7 +11,10 @@ import crunches from "../assets/images/crunches.png";
 import { Link } from "react-router-dom";
 import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { db } from "../firebase";
+import Cookies from "js-cookie";
 const exrInfo = {
   crunches: {
     index: [12, 24, 26],
@@ -162,7 +165,16 @@ function Counter(props) {
     count = 0;
     dir = 0;
   }
-
+  const handleClick = () => {
+    const ID = Cookies.get("userID");
+    const docRef = doc(db, `user/${ID}/crunches`, uuidv4());
+    const repsCounter = setDoc(docRef, {
+      reps: count,
+      timeStamp: serverTimestamp(),
+      uid: ID,
+    });
+    console.log(repsCounter);
+  };
   return (
     <>
       <Container
@@ -265,6 +277,7 @@ function Counter(props) {
                   variant="contained"
                   color="primary"
                   sx={{ cursor: "pointer" }}
+                  onClick={handleClick}
                 >
                   back
                 </Button>

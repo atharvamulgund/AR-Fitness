@@ -5,23 +5,13 @@ import Webcam from "react-webcam";
 import { useRef, useEffect } from "react";
 import angleBetweenThreePoints from "./angle";
 import yoga1 from "../assets/images/yogapose.png";
-import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
 import { Box, Container, Typography } from "@mui/material";
 import HomeHeader from "./header/HomeHeader.react";
-
-const styles = {
-  webcam: {
-    position: "absolute",
-    marginRight: "auto",
-    marginLeft: "auto",
-    left: 0,
-    right: 800,
-    top: 200,
-    textAlign: "center",
-    zIndex: 9,
-    borderRadius: "2rem",
-  },
+const speech = window.speechSynthesis;
+const speak = (count) => {
+  const object = new SpeechSynthesisUtterance(count);
+  object.lang = "en-US";
+  speech.speak(object);
 };
 
 const Virabhadrasana = () => {
@@ -202,14 +192,15 @@ const Virabhadrasana = () => {
 
       canvasCtx.fillStyle = "white";
       canvasCtx.font = "30px aerial";
-      canvasCtx.fillText(
+      const timer = canvasCtx.fillText(
         "Seconds holded: ".concat(
           String(Math.round((new Date().getTime() - t) / 1000))
         ),
         10,
         40
       );
-
+      console.log(timer);
+      speak(timer);
       canvasCtx.restore();
     }
   }
@@ -261,20 +252,16 @@ const Virabhadrasana = () => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
             position: "relative",
             borderRadius: "2rem",
             width: "100%",
-            gap: "1rem",
           }}
         >
-          <Webcam ref={webcamRef} className="full-width" />
+          <Webcam ref={webcamRef} />
           <canvas
             ref={canvasRef}
             style={{
               position: "absolute",
-              width: "100%",
             }}
           />
         </Box>
