@@ -36,6 +36,7 @@ Firebase is a cloud-based platform that provides a range of services and tools f
 ## Mediapipe
 - Mediapipe is an open-source framework developed by Google that provides tools for building real-time computer vision applications.
 - We chose to use Mediapipe specifically for its pose detection capabilities, which allow us to accurately estimate the positions of 33 key body landmarks in real time.
+  
 
 
 
