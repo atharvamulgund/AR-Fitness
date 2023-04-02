@@ -1,5 +1,5 @@
 
-# Augmented Reality Fitness (AR Fitness)
+# AR Fitness(Augmented Reality Fitness )
 
 Content of Read Md file:
 
@@ -7,7 +7,8 @@ Content of Read Md file:
 - Tech Stack
 - Features
 
-
+# Demo: 
+<a href="https://ar-fitness3.web.app/"> Check Out<a/>
 
 ## Abstract
 - Augmented Reality (AR) technology for an immersive and interactive experience
