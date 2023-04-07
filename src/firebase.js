@@ -8,6 +8,7 @@ import {
 import Cookies from "js-cookie";
 import { setDoc, doc, serverTimestamp, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -33,22 +34,19 @@ export const signInWithGoogle = async () => {
     Cookies.set("uat", accessToken);
     const uid = res.user.uid.toString();
     Cookies.set("userID", uid);
+    const profile = {
+      name: res.user.displayName,
+      email: res.user.email,
+      photo: res.user.photoURL,
+    };
+    const userData = JSON.stringify(profile);
+    Cookies.set("profile", userData);
     const docRef = doc(db, "user", uid);
     await setDoc(docRef, {
       userID: uid,
       timeStamp: serverTimestamp(),
+      name: res.user.displayName,
     });
-    // const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    // const docs = await getDocs(q);
-    // if (docs.docs.length === 0) {
-    //   await addDoc(collection(db, "users"), {
-    //     uid: user.uid,
-    //     name: user.displayName,
-    //     authProvider: "google",
-    //     email: user.email,
-    //     timeStamp: serverTimestamp(),
-    //   });
-    // }
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -59,6 +57,7 @@ export const signInWithGoogle = async () => {
 export const logout = () => {
   signOut(auth);
   localStorage.clear();
+
   Cookies.remove("userID");
   Cookies.remove("uat");
 };

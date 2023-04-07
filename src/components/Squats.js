@@ -28,7 +28,14 @@ const Squats = () => {
   let camera = null;
   const countTextbox = useRef(null);
   let dir = 0;
+  // Get Time
+  useEffect(() => {
+    const startTime = new Date();
+    const startTimeSec = startTime.getSeconds();
 
+    localStorage.setItem("squatsStartTime", startTimeSec);
+    console.log(startTime);
+  }, []);
   function onResult(results) {
     if (results.poseLandmarks) {
       const position = results.poseLandmarks;
@@ -261,10 +268,17 @@ const Squats = () => {
   const handleClick = () => {
     const ID = Cookies.get("userID");
     const docRef = doc(db, `user/${ID}/squats`, uuidv4());
+    const startTimeStamp = localStorage.getItem("squatsStartTime");
+    const endTimeVar = new Date();
+    const endTimeStamp = endTimeVar.getSeconds();
+    const timeSpent = endTimeStamp - startTimeStamp;
     const repsCounter = setDoc(docRef, {
       reps: count,
-      timeStamp: serverTimestamp(),
+      startTimeStamp: startTimeStamp,
+      endTimeStamp: endTimeStamp,
+      timeSpent: Math.abs(timeSpent),
       uid: ID,
+      exceriseName: "Squats",
     });
     console.log(repsCounter);
   };

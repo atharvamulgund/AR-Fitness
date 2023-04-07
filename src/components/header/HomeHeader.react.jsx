@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoWithText from "../../assets/images/logo-with-text.svg";
 import {
   Box,
@@ -17,9 +17,15 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { logout } from "../../firebase";
+
 const drawerWidth = `100%`;
 
 const HomeHeader = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    logout();
+    navigate("/login");
+  };
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -60,9 +66,9 @@ const HomeHeader = () => {
             color: "#fff",
           }}
         >
-          <a href="/home" className="link" onClick={handleDrawerToggle}>
+          <a href="/bm" className="link" onClick={handleDrawerToggle}>
             <ListItemButton>
-              <ListItemText primary="Home" />
+              <ListItemText primary="Measurements" />
             </ListItemButton>
           </a>
           <a href="/diet" className="link" onClick={handleDrawerToggle}>
@@ -88,7 +94,11 @@ const HomeHeader = () => {
           />
           <Link to="/Login" className="link" onClick={handleDrawerToggle}>
             <ListItemButton>
-              <Button variant="contained" color="secondary" onClick={logout}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleClick}
+              >
                 Logout
               </Button>
             </ListItemButton>
@@ -164,8 +174,8 @@ const HomeHeader = () => {
                 color: "#ffffff",
               }}
             >
-              <a href="/home" className="link">
-                <Button variant="h6">Home</Button>
+              <a href="/bm" className="link">
+                <Button variant="h6">Measurements</Button>
               </a>
               <a href="/diet" className="link">
                 <Button variant="h6">Diet</Button>
@@ -177,7 +187,11 @@ const HomeHeader = () => {
                 <Button variant="h6">Workout</Button>
               </a>
               <Link to="/" className="link">
-                <Button variant="contained" color="secondary" onClick={logout}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleClick}
+                >
                   Logout
                 </Button>
               </Link>

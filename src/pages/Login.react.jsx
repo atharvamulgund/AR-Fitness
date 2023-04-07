@@ -6,13 +6,13 @@ import { Container, Box, Typography, Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import login from "../assets/images/login.svg";
 import Header from "../components/header/header.react";
-
+import CircularProgress from "@mui/material/CircularProgress";
 function Login() {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) {
-      // maybe trigger a loading screen
+      <CircularProgress />;
       return;
     }
     if (user) navigate("/home");

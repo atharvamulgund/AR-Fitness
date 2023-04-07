@@ -27,7 +27,14 @@ const BicepCurls = () => {
   const canvasRef = useRef(null);
   let camera = null;
   const countTextbox = useRef(null);
+  // Get Time
+  useEffect(() => {
+    const startTime = new Date();
+    const startTimeSec = startTime.getSeconds();
 
+    localStorage.setItem("pushUpStartTime", startTimeSec);
+    console.log(startTime);
+  }, []);
   function onResult(results) {
     if (results.poseLandmarks) {
       const position = results.poseLandmarks;
@@ -260,9 +267,16 @@ const BicepCurls = () => {
   const handleClick = () => {
     const ID = Cookies.get("userID");
     const docRef = doc(db, `user/${ID}/pushups`, uuidv4());
+    const startTimeStamp = localStorage.getItem("pushUpStartTime");
+    const endTimeVar = new Date();
+    const endTimeStamp = endTimeVar.getSeconds();
+    const timeSpent = endTimeStamp - startTimeStamp;
     const repsCounter = setDoc(docRef, {
       reps: count,
-      timeStamp: serverTimestamp(),
+      startTimeStamp: startTimeStamp,
+      endTimeStamp: endTimeStamp,
+      timeSpent: Math.abs(timeSpent),
+      exceriseName: "PushUPs",
       uid: ID,
     });
     console.log(repsCounter);

@@ -40,6 +40,14 @@ function Counter(props) {
   if (props.exercise === "crunches") {
     imgSource = crunches;
   }
+  // Get Time
+  useEffect(() => {
+    const startTime = new Date();
+    const startTimeSec = startTime.getSeconds();
+
+    localStorage.setItem("crunchesStartTime", startTimeSec);
+    console.log(startTime);
+  }, []);
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -168,9 +176,16 @@ function Counter(props) {
   const handleClick = () => {
     const ID = Cookies.get("userID");
     const docRef = doc(db, `user/${ID}/crunches`, uuidv4());
+    const startTimeStamp = localStorage.getItem("crunchesStartTime");
+    const endTimeVar = new Date();
+    const endTimeStamp = endTimeVar.getSeconds();
+    const timeSpent = endTimeStamp - startTimeStamp;
     const repsCounter = setDoc(docRef, {
       reps: count,
-      timeStamp: serverTimestamp(),
+      startTimeStamp: startTimeStamp,
+      endTimeStamp: endTimeStamp,
+      timeSpent: Math.abs(timeSpent),
+      exceriseName: "Crunches",
       uid: ID,
     });
     console.log(repsCounter);

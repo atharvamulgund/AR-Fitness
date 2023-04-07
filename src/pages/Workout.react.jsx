@@ -14,6 +14,8 @@ import { WorkoutVariation } from "../data/data";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
 const Workout = () => {
   const navigate = useNavigate();
 

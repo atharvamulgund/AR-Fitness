@@ -35,43 +35,6 @@ body {
   text-fill-color: transparent;
 }
 
-.bg-blue-gradient {
-  background: linear-gradient(
-    157.81deg,
-    #def9fa -43.27%,
-    #bef3f5 -21.24%,
-    #9dedf0 12.19%,
-    #7de7eb 29.82%,
-    #5ce1e6 51.94%,
-    #33bbcf 90.29%
-  );
-}
-
-.bg-black-gradient {
-  background: linear-gradient(
-    144.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
-}
-
-.bg-black-gradient-2 {
-  background: linear-gradient(
-    -168.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
-}
-
-.bg-gray-gradient {
-  background: linear-gradient(
-    153.47deg,
-    rgba(255, 255, 255, 0) -341.94%,
-    #14101d 95.11%
-  );
-}
 ::-webkit-scrollbar {
   width: 10px;
   height: 25px;
@@ -123,15 +86,22 @@ body {
     transform: translateY(10px);
   }
 }
-.rotate {
-  mix-blend-mode: hard-light;
-}
 .full-width {
   width: 80%;
+}
+.gradient__bg_white {
+  background: radial-gradient(
+    circle at 75% 50%,
+    #ffffff4a 10%,
+    rgba(4, 12, 24, 1) 35%
+  );
 }
 @media screen and (max-width: 768px) {
   .full-width {
     width: 100%;
+  }
+  .gradient__bg_white {
+    background: linear-gradient(360deg, #ffffff4a 10%, rgba(4, 12, 24, 1) 95%);
   }
 }
 .gradient__bg_down {

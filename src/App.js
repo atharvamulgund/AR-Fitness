@@ -24,7 +24,7 @@ import BicepCurls from "./components/BicepCurls";
 import PushUps from "./components/PushUps";
 import Squats from "./components/Squats";
 import Cookies from "js-cookie";
-// import BodyMeasurmnets from "./pages/BodyMeasurmnets.react";
+import BodyMeasurmnets from "./pages/BodyMeasurements.react";
 
 function App() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function App() {
         <Route path="*" element={<Landing />} exact />
         <Route path="/" element={<Landing />} exact />
         <Route path="/login" element={<Login />} exact />
-        {/* <Route path="/bm" element={<BodyMeasurmnets />} exact /> */}
+        <Route path="/bm" element={<BodyMeasurmnets />} exact />
 
         <Route path="/home" element={<Home />} exact />
 

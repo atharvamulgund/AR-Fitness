@@ -11,10 +11,17 @@ import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import imgURL from "../assets/images/bicepcurls.png";
 
-import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  serverTimestamp,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
 import Cookies from "js-cookie";
+import { useState } from "react";
 let count = 0;
 
 const speech = window.speechSynthesis;
@@ -30,6 +37,14 @@ const BicepCurls = () => {
   const countTextbox = useRef(null);
 
   let dir = 0;
+
+  useEffect(() => {
+    const startTime = new Date();
+    const startTimeSec = startTime.getSeconds();
+
+    localStorage.setItem("bicepStartTime", startTimeSec);
+    console.log(startTime);
+  }, []);
 
   function onResult(results) {
     if (results.poseLandmarks) {
@@ -264,9 +279,16 @@ const BicepCurls = () => {
   const handleClick = () => {
     const ID = Cookies.get("userID");
     const docRef = doc(db, `user/${ID}/bicepsCurls`, uuidv4());
+    const startTimeStamp = localStorage.getItem("bicepStartTime");
+    const endTimeVar = new Date();
+    const endTimeStamp = endTimeVar.getSeconds();
+    const timeSpent = endTimeStamp - startTimeStamp;
     const repsCounter = setDoc(docRef, {
       reps: count,
-      timeStamp: serverTimestamp(),
+      exceriseName: "Biceps",
+      startTimeStamp: startTimeStamp,
+      endTimeStamp: endTimeStamp,
+      timeSpent: Math.abs(timeSpent),
       uid: ID,
     });
     console.log(repsCounter);

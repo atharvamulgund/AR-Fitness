@@ -23,6 +23,9 @@ let theme = createTheme({
     secondary: {
       main: "#F15C26",
     },
+    white: {
+      main: "#fff",
+    },
   },
 });
 
