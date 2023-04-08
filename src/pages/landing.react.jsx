@@ -17,9 +17,10 @@ import Cookies from "js-cookie";
 const Landing = () => {
   const navigate = useNavigate();
 
-  if (Cookies.get("userID")) {
+  if (Cookies.get("uat")) {
     navigate("/home");
-  } else {
+  }
+  if (!Cookies.get("userID")) {
     navigate("/");
   }
 

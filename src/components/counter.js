@@ -7,11 +7,11 @@ import angleBetweenThreePoints from "./angle";
 import { Button } from "@material-ui/core";
 
 import crunches from "../assets/images/crunches.png";
-
+import imgURL from "../assets/images/Crunch.gif";
 import { Link } from "react-router-dom";
 import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
 import Cookies from "js-cookie";
@@ -37,9 +37,7 @@ function Counter(props) {
   //const [exr, setExr] = useState("bicepCurls");
 
   let imgSource;
-  if (props.exercise === "crunches") {
-    imgSource = crunches;
-  }
+
   // Get Time
   useEffect(() => {
     const startTime = new Date();
@@ -228,23 +226,28 @@ function Counter(props) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#f15a24",
+            backgroundColor: "#fff",
             borderRadius: "2rem",
             width: { lg: "40%", xs: "100%" },
           }}
         >
           <Typography
             variant="h4"
-            style={{ color: "white", textTransform: "capitalize" }}
+            color="primary"
+            style={{ textTransform: "capitalize" }}
           >
-            {props.exercise}
+            Crunches
           </Typography>
           <Box
             sx={{
               width: "50%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <img src={imgSource} width="80%" alt={props.exercise}></img>
+            <img src={imgURL} width="100%" alt="Crunches"></img>
           </Box>
           <br></br>
           <Box
@@ -257,14 +260,34 @@ function Counter(props) {
               padding: "1rem",
             }}
           >
-            <input
-              variant="filled"
-              ref={countTextbox}
-              value={count}
-              textAlign="center"
-              style={{ height: 50, fontSize: 40, width: 80 }}
-            />
+            <Box
+              sx={{
+                display: "flex",
 
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "2rem",
+                padding: "1rem",
+              }}
+            >
+              <Typography variant="h6" color="secondary">
+                Count
+              </Typography>
+              <input
+                variant="filled"
+                ref={countTextbox}
+                value={count}
+                textAlign="center"
+                style={{
+                  height: 50,
+                  fontSize: 20,
+                  width: 80,
+                  padding: "1rem",
+                  border: "2px solid orange",
+                  borderRadius: "10px",
+                }}
+              />
+            </Box>
             <Box
               sx={{
                 display: "flex",

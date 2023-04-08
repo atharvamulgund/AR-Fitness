@@ -5,10 +5,10 @@ import Webcam from "react-webcam";
 import { useRef, useEffect } from "react";
 import angleBetweenThreePoints from "./angle";
 import yoga1 from "../assets/images/AdhoMukhaSvanasana.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { Container, Typography, Box } from "@mui/material";
-import HomeHeader from "./header/HomeHeader.react";
+
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
@@ -21,6 +21,11 @@ const speak = (count) => {
 };
 
 const AdhoMukhaSvanasana = () => {
+  const navigate = useNavigate();
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   let camera = null;
@@ -324,7 +329,6 @@ const AdhoMukhaSvanasana = () => {
   };
   return (
     <>
-      <HomeHeader />
       <Container
         maxWidth="false"
         sx={{
@@ -350,7 +354,7 @@ const AdhoMukhaSvanasana = () => {
             className="full-width"
             style={{
               position: "absolute",
-              width: "100%",
+              width: "80%",
             }}
           />
         </Box>
@@ -363,12 +367,16 @@ const AdhoMukhaSvanasana = () => {
             alignItems: "center",
             justifyContent: "center",
             color: "secondary",
-
+            backgroundColor: "#fff",
             borderRadius: "2rem",
           }}
         >
-          <Typography variant="h6" sx={{ mb: 2 }} color="secondary">
-            Try to mimic this posture
+          <Typography
+            variant="h6"
+            sx={{ mb: 2, textAlign: "center" }}
+            color="primary"
+          >
+            Try to mimic this posture to perform AdhoMukhaSvanasana
           </Typography>
           <Box
             sx={{
@@ -379,15 +387,12 @@ const AdhoMukhaSvanasana = () => {
           >
             <img src={yoga1} alt="Yoga 2" width="100%"></img>
           </Box>
-          <Link
-            to="/workout"
-            style={{ textDecoration: "none", color: "white" }}
-          >
+          <Link to="/yoga" className="link">
             <Button
               size="large"
               variant="contained"
-              color="secondary"
-              sx={{ cursor: "pointer" }}
+              color="primary"
+              sx={{ cursor: "pointer", background: "#f15a24" }}
               onClick={handleClick}
             >
               back

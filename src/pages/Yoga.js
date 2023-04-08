@@ -17,11 +17,10 @@ import { useEffect } from "react";
 const Yoga = () => {
   const navigate = useNavigate();
 
-  // if (!Cookies.get("uat")) {
-  //   alert("Please Login");
-  //   navigate("/login");
-  // }
-
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   return (
     <>
       <HomeHeader />

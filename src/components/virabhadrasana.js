@@ -6,7 +6,12 @@ import { useRef, useEffect } from "react";
 import angleBetweenThreePoints from "./angle";
 import yoga1 from "../assets/images/yogapose.png";
 import { Box, Container, Typography } from "@mui/material";
-import HomeHeader from "./header/HomeHeader.react";
+import Cookies from "js-cookie";
+import { db } from "../firebase";
+import { v4 } from "uuid";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@material-ui/core";
 const speech = window.speechSynthesis;
 const speak = (count) => {
   const object = new SpeechSynthesisUtterance(count);
@@ -15,6 +20,11 @@ const speak = (count) => {
 };
 
 const Virabhadrasana = () => {
+  const navigate = useNavigate();
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   let camera = null;
@@ -234,12 +244,21 @@ const Virabhadrasana = () => {
       camera.start();
     }
   });
+  const handleClick = () => {
+    const ID = Cookies.get("userID");
+    const userTime = onResult();
+    const docRef = doc(db, `user/${ID}/virabhadrasana`, v4());
+    const repsCounter = setDoc(docRef, {
+      // timer: userTime,
+      timeStamp: serverTimestamp(),
+      uid: ID,
+    });
+    console.log(repsCounter);
+  };
 
   return (
     <>
-      <HomeHeader />
       <Container
-        maxWidth="false"
         sx={{
           display: "flex",
           alignItems: "center",
@@ -257,11 +276,13 @@ const Virabhadrasana = () => {
             width: "100%",
           }}
         >
-          <Webcam ref={webcamRef} />
+          <Webcam ref={webcamRef} className="full-width" />
           <canvas
             ref={canvasRef}
+            className="full-width"
             style={{
               position: "absolute",
+              width: "80%",
             }}
           />
         </Box>
@@ -274,15 +295,20 @@ const Virabhadrasana = () => {
             alignItems: "center",
             justifyContent: "center",
             color: "secondary",
-
+            backgroundColor: "#fff",
             borderRadius: "2rem",
           }}
         >
-          <Typography variant="h6" sx={{ mb: 2 }} color="secondary">
-            Try to mimic this posture
+          <Typography
+            variant="h6"
+            sx={{ mb: 2, textAlign: "center", padding: "1rem" }}
+            color="primary"
+          >
+            Try to mimic this posture to perform Virabhadrasana
           </Typography>
           <Box
             sx={{
+              width: "70%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -290,6 +316,17 @@ const Virabhadrasana = () => {
           >
             <img src={yoga1} alt="Yoga 2" width="100%"></img>
           </Box>
+          <Link to="/yoga" className="link">
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              sx={{ cursor: "pointer", background: "#f15a24" }}
+              onClick={handleClick}
+            >
+              back
+            </Button>
+          </Link>
         </Box>
       </Container>
     </>

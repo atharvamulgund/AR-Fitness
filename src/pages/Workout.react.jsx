@@ -19,9 +19,9 @@ import { db } from "../firebase";
 const Workout = () => {
   const navigate = useNavigate();
 
-  if (!Cookies.get("uat")) {
+  if (!Cookies.get("userID")) {
     alert("Please Login");
-    navigate("/login");
+    navigate("/");
   }
 
   return (

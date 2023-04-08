@@ -18,10 +18,10 @@ import Cookies from "js-cookie";
 const Diet = () => {
   const navigate = useNavigate();
 
-  // if (!Cookies.get("uat")) {
-  //   alert("Please Login");
-  //   navigate("/login");
-  // }
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   return (
     <>
       <HomeHeader />

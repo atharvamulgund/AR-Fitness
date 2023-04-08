@@ -34,9 +34,11 @@ ChartJS.register(...registerables);
 export const Home = () => {
   const navigate = useNavigate();
   const uid = Cookies.get("userID");
-  const userData = Cookies.get("profile");
-  const userObject = JSON.parse(userData);
-  // console.log(userObject);
+  const name = localStorage.getItem("name");
+
+  const photo = localStorage.getItem("photo");
+
+  // // console.log(userObject);
   if (!Cookies.get("userID")) {
     alert("Please Login");
     navigate("/");
@@ -139,38 +141,6 @@ export const Home = () => {
     goalMeasurementeData();
     sevenDaysData();
     fetchQuotes();
-    if (
-      bicepLength.length > pushUpLength.length &&
-      bicepLength.length > squatsLength.length &&
-      bicepLength.length > crunchesLength.length
-    ) {
-      setFavExcerise("Biceps");
-      console.log(favExcerise);
-    }
-    if (
-      pushUpLength.length > bicepLength.length &&
-      pushUpLength.length > squatsLength.length &&
-      pushUpLength.length > crunchesLength.length
-    ) {
-      setFavExcerise("Push Ups");
-      console.log(favExcerise);
-    }
-    if (
-      squatsLength.length > bicepLength.length &&
-      squatsLength.length > pushUpLength.length &&
-      squatsLength.length > crunchesLength.length
-    ) {
-      setFavExcerise("Squats");
-      console.log(favExcerise);
-    }
-    if (
-      crunchesLength.length > bicepLength.length &&
-      crunchesLength.length > pushUpLength.length &&
-      crunchesLength.length > squatsLength.length
-    ) {
-      setFavExcerise("Crunches");
-      console.log(favExcerise);
-    }
   }, []);
 
   console.log(favExcerise);
@@ -259,6 +229,38 @@ export const Home = () => {
 
       setWeightData(weightObj);
     }
+    if (
+      bicepLength.length > pushUpLength.length &&
+      bicepLength.length > squatsLength.length &&
+      bicepLength.length > crunchesLength.length
+    ) {
+      setFavExcerise("Biceps");
+      console.log(favExcerise);
+    }
+    if (
+      pushUpLength.length > bicepLength.length &&
+      pushUpLength.length > squatsLength.length &&
+      pushUpLength.length > crunchesLength.length
+    ) {
+      setFavExcerise("Push Ups");
+      console.log(favExcerise);
+    }
+    if (
+      squatsLength.length > bicepLength.length &&
+      squatsLength.length > pushUpLength.length &&
+      squatsLength.length > crunchesLength.length
+    ) {
+      setFavExcerise("Squats");
+      console.log(favExcerise);
+    }
+    if (
+      crunchesLength.length > bicepLength.length &&
+      crunchesLength.length > pushUpLength.length &&
+      crunchesLength.length > squatsLength.length
+    ) {
+      setFavExcerise("Crunches");
+      console.log(favExcerise);
+    }
   }, [
     bicepsstartTimeCol,
     pushUpstartTimeCol,
@@ -340,6 +342,7 @@ export const Home = () => {
             gap: "1rem",
             marginTop: "2rem",
             width: { lg: "80%", sm: "100%", xs: "100%" },
+            height: { lg: "100vh", sm: "100%", xs: "100%" },
           }}
         >
           {/* Welcome Box */}
@@ -384,14 +387,14 @@ export const Home = () => {
                 }}
               >
                 <Avatar
-                  src={userObject.photo}
-                  alt={userObject.name}
+                  src={photo}
+                  alt={name}
                   sx={{
                     width: { lg: "3rem", sm: "2rem", xs: "1.5rem" },
                     height: { lg: "3rem", sm: "2rem", xs: "1.5rem" },
                   }}
                 />
-                {userObject.name}
+                {name}
               </Typography>
               <Typography variant="body1" color="primary">
                 Staying active is key to a healthy lifestyle, and we're here to
@@ -413,10 +416,10 @@ export const Home = () => {
             <Box
               sx={{
                 display: "flex",
-
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                maxWidth: "300px",
+                maxWidth: { lg: "300px", sm: "300px", xs: "100%" },
                 width: "100%",
                 borderRadius: "24px",
               }}
@@ -425,11 +428,11 @@ export const Home = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
+
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "150px",
-                  height: "150px",
+                  width: "170px",
+                  height: "170px",
                 }}
               >
                 <img src={activityImgURL} alt="Activity" width="100%" />
@@ -437,12 +440,20 @@ export const Home = () => {
               <Box
                 sx={{
                   width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "0.5rem",
                 }}
               >
                 <Typography variant="h6" sx={{ color: "#fff" }}>
                   Activity
                 </Typography>
-                <Typography variant="body1" sx={{ color: "#fff" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: "#fff", textAlign: "center" }}
+                >
                   Track your activity and see your progress over time.
                 </Typography>
               </Box>
@@ -452,10 +463,18 @@ export const Home = () => {
                 variant="h6"
                 color="secondary"
                 className="glassmorphism"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "24px",
+                  padding: "0.5rem",
+                }}
               >
                 Please fill the measuremnet form to get your analysis
-                <Link to="/measurement" className="link">
-                  <Button variant="standard" color="secondary">
+                <Link to="/bm" className="link">
+                  <Button variant="contained" color="secondary">
                     Measurement
                   </Button>
                 </Link>
@@ -467,7 +486,7 @@ export const Home = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  maxWidth: "300px",
+                  maxWidth: { lg: "300px", sm: "300px", xs: "100%" },
                   width: "100%",
                   borderRadius: "24px",
                 }}
@@ -506,7 +525,8 @@ export const Home = () => {
                   variant="body2"
                   sx={{
                     color: "#fff",
-                    padding: "0.5rem",
+                    padding: "1rem",
+                    textAlign: "center",
                   }}
                 >
                   You have accomplished {percentageWeight.toFixed(2)}% of your
@@ -517,12 +537,15 @@ export const Home = () => {
             <Box
               sx={{
                 display: "flex",
-
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                maxWidth: "300px",
+                maxWidth: { lg: "300px", sm: "300px", xs: "100%" },
                 width: "100%",
                 borderRadius: "24px",
+                height: "100%",
+                maxHeight: { lg: "300px", sm: "300px", xs: "100%" },
+                padding: "1rem",
               }}
               className="glassmorphism"
             >
@@ -545,7 +568,8 @@ export const Home = () => {
               >
                 <Typography
                   variant="body1"
-                  sx={{ color: "#fff", padding: "0.5rem" }}
+                  sx={{ color: "#fff", padding: "0.5rem 0.5rem 0 0.5rem" }}
+                  className="wrap-5"
                 >
                   {quotes.content}
                 </Typography>
@@ -557,7 +581,7 @@ export const Home = () => {
             <Typography variant="h6" color="secondary">
               Please fill the measuremnet form to get your analysis
               <Link to="/bm" className="link">
-                <Button variant="standard" color="secondary">
+                <Button variant="contained" color="secondary">
                   Measurement
                 </Button>
               </Link>
@@ -566,7 +590,7 @@ export const Home = () => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { lg: "row", sm: "row", xs: "column" },
+                flexDirection: { lg: "row", sm: "column", xs: "column" },
                 justifyContent: "center",
                 alignItems: "center",
                 gap: "2rem",
@@ -635,11 +659,12 @@ export const Home = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: { lg: "space-between", sm: "center", xs: "center" },
             alignItems: "center",
             gap: "1rem",
             marginTop: "2rem",
             width: { lg: "40%", sm: "80%", xs: "100%" },
+            height: { lg: "100vh", sm: "100vh", xs: "100%" },
           }}
         >
           <Box

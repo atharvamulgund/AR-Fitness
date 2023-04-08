@@ -6,9 +6,20 @@ import { useRef, useEffect } from "react";
 import angleBetweenThreePoints from "./angle";
 import yoga1 from "../assets/images/trikonasana.png";
 import { Box, Container, Typography } from "@mui/material";
-import HomeHeader from "./header/HomeHeader.react";
+
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import { v4 } from "uuid";
+import Cookies from "js-cookie";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const Trikonasana = () => {
+  const navigate = useNavigate();
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   let camera = null;
@@ -189,10 +200,19 @@ const Trikonasana = () => {
       camera.start();
     }
   });
-
+  const handleClick = () => {
+    const ID = Cookies.get("userID");
+    const userTime = onResult();
+    const docRef = doc(db, `user/${ID}/trikonasana`, v4());
+    const repsCounter = setDoc(docRef, {
+      timer: userTime,
+      timeStamp: serverTimestamp(),
+      uid: ID,
+    });
+    console.log(repsCounter);
+  };
   return (
     <>
-      <HomeHeader />
       <Container
         sx={{
           display: "flex",
@@ -211,11 +231,13 @@ const Trikonasana = () => {
             width: "100%",
           }}
         >
-          <Webcam ref={webcamRef} />
+          <Webcam ref={webcamRef} className="full-width" />
           <canvas
             ref={canvasRef}
+            className="full-width"
             style={{
               position: "absolute",
+              width: "80%",
             }}
           />
         </Box>
@@ -228,15 +250,20 @@ const Trikonasana = () => {
             alignItems: "center",
             justifyContent: "center",
             color: "secondary",
-
+            backgroundColor: "#fff",
             borderRadius: "2rem",
           }}
         >
-          <Typography variant="h6" sx={{ mb: 2 }} color="secondary">
-            Try to mimic this posture
+          <Typography
+            variant="h6"
+            sx={{ mb: 2, textAlign: "center", padding: "1rem" }}
+            color="primary"
+          >
+            Try to mimic this posture to perform Trikonasana
           </Typography>
           <Box
             sx={{
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -244,6 +271,17 @@ const Trikonasana = () => {
           >
             <img src={yoga1} alt="Yoga 2" width="100%"></img>
           </Box>
+          <Link to="/yoga" className="link">
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              sx={{ cursor: "pointer", background: "#f15a24" }}
+              onClick={handleClick}
+            >
+              back
+            </Button>
+          </Link>
         </Box>
       </Container>
     </>

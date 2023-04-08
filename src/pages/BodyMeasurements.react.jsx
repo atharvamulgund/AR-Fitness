@@ -19,6 +19,19 @@ import HomeHeader from "../components/header/HomeHeader.react";
 import { v4 } from "uuid";
 
 const BodyMeasurements = () => {
+  const navigate = useNavigate();
+  const uid = Cookies.get("userID");
+  const userData = Cookies.get("profile");
+  if (userData === undefined) {
+    // alert("Please Login");
+    navigate("/login");
+  }
+
+  // // console.log(userObject);
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
   const [weight, setWeight] = useState("");
   const [weightGoal, setWeightGoal] = useState("");
   const [height, setHeight] = useState("");
@@ -28,15 +41,13 @@ const BodyMeasurements = () => {
   const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
 
-  const navigate = useNavigate();
-
   const handleChange = (event) => {
     setBodyTypeGoal(event.target.value);
   };
 
   //   BMI Calculator
   const bmiVar = weight / ((height / 100) * (height / 100));
-  const uid = Cookies.get("userID");
+
   const initialMeasurement = async () => {
     const data = {
       weight,

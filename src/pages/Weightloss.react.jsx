@@ -12,10 +12,10 @@ import Cookies from "js-cookie";
 const Weightloss = () => {
   const navigate = useNavigate();
 
-  // if (!Cookies.get("uat")) {
-  //   alert("Please Login");
-  //   navigate("/login");
-  // }
+  if (!Cookies.get("userID")) {
+    alert("Please Login");
+    navigate("/");
+  }
 
   const [expanded, setExpanded] = useState(false);
 
@@ -30,7 +30,7 @@ const Weightloss = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
+          width: { lg: "50%", sm: "80%", xs: "100%" },
           flexDirection: "column",
         }}
         maxWidth="false"
@@ -163,7 +163,7 @@ const Weightloss = () => {
           <Accordion
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
-            className="bg-black-gradient"
+            className="gradient__bg_center"
             sx={{
               color: "#fff",
             }}
@@ -200,7 +200,7 @@ const Weightloss = () => {
           <Accordion
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
-            className="bg-black-gradient"
+            className="gradient__bg_center"
             sx={{
               color: "#fff",
             }}
@@ -239,7 +239,7 @@ const Weightloss = () => {
           <Accordion
             expanded={expanded === "panel3"}
             onChange={handleChange("panel3")}
-            className="bg-black-gradient"
+            className="gradient__bg_center"
             sx={{
               color: "#fff",
             }}
@@ -283,7 +283,7 @@ const Weightloss = () => {
           <Accordion
             expanded={expanded === "panel4"}
             onChange={handleChange("panel4")}
-            className="bg-black-gradient"
+            className="gradient__bg_center"
             sx={{
               color: "#fff",
             }}
@@ -340,7 +340,7 @@ const Weightloss = () => {
           <Accordion
             expanded={expanded === "panel5"}
             onChange={handleChange("panel5")}
-            className="bg-black-gradient"
+            className="gradient__bg_center"
             sx={{
               color: "#fff",
             }}

@@ -34,13 +34,14 @@ export const signInWithGoogle = async () => {
     Cookies.set("uat", accessToken);
     const uid = res.user.uid.toString();
     Cookies.set("userID", uid);
-    const profile = {
-      name: res.user.displayName,
-      email: res.user.email,
-      photo: res.user.photoURL,
-    };
-    const userData = JSON.stringify(profile);
-    Cookies.set("profile", userData);
+
+    const name = res.user.displayName;
+    const email = res.user.email;
+    const photo = res.user.photoURL;
+
+    localStorage.setItem("name", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("photo", photo);
     const docRef = doc(db, "user", uid);
     await setDoc(docRef, {
       userID: uid,
