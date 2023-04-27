@@ -9,18 +9,12 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import activityImgURL from "../assets/images/activity-graph.svg";
+
+import activityImgURL from "../assets/images/cookies.svg";
 import HomeHeader from "../components/header/HomeHeader.react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Chip from "@mui/material/Chip";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import reminderImgURL from "../assets/images/reminder_dashboard.svg";
 import popular from "../assets/images/popular.svg";
 import { collection, getDocs } from "firebase/firestore";
@@ -28,7 +22,11 @@ import { db } from "../firebase";
 import motivation from "../assets/images/motivation.svg";
 import { Line, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, registerables } from "chart.js";
-import { Chart } from "react-chartjs-2";
+import {
+  AutoGraphOutlined,
+  DonutLargeOutlined,
+  EmojiEmotionsOutlined,
+} from "@mui/icons-material";
 ChartJS.register(...registerables);
 
 export const Home = () => {
@@ -159,11 +157,11 @@ export const Home = () => {
       const bicepTimeObj = bicepsstartTimeCol.map((item) => {
         return item.timeSpent;
       });
+
       const bicepTimeSpent = bicepTimeObj.reduce((acc, value) => {
         return acc + value;
       }, 0);
 
-      // console.log("BicepsTime:", bicepTimeSpent);
       setBicepsTime(bicepTimeSpent);
     }
     if (Array.isArray(pushUpstartTimeCol)) {
@@ -269,10 +267,26 @@ export const Home = () => {
     initialMeasuremnets,
     goalsMeasuremnet,
     sevenDaysData,
+    bicepLength,
+    pushUpLength,
+    squatsLength,
+    crunchesLength,
+    favExcerise,
   ]);
   const timeSpent = (bicepsTime + pushUpTime + squatsTime + crunhesTime) * 60;
   const percentageWeight = Math.abs((goalWeight / weight) * 100);
+  const bicepPoints = bicepLength.length * 5;
 
+  const pushUpPoints = pushUpLength.length * 5;
+
+  const squatsPoints = squatsLength.length * 20;
+
+  const crunchesPoints = crunchesLength.length * 10;
+
+  const totalPoints =
+    bicepPoints + pushUpPoints + squatsPoints + crunchesPoints;
+
+  const cookiesPercentage = (totalPoints * 100) / 1000;
   // Pie Chart data
   const pieData = {
     labels: ["Goal", "Current", "Progress"],
@@ -309,18 +323,22 @@ export const Home = () => {
     labels: ["Day 7", "Day 14", "Day 21", "Day 28"],
     datasets: [
       {
-        label: "Weight DataSet",
+        label: "BMI DataSet",
         data: bmiData,
         backgroundColor: ["#fff"],
         borderColor: ["#F15C26"],
         hoverOffset: 4,
       },
     ],
-    option: [{ type: "line" }],
+    option: [
+      {
+        type: "line",
+      },
+    ],
   };
   return (
     <>
-      <HomeHeader />
+      <HomeHeader donutCount={totalPoints} />
       {/* 3 Container Column */}
       <Container
         sx={{
@@ -341,8 +359,8 @@ export const Home = () => {
             alignItems: "center",
             gap: "1rem",
             marginTop: "2rem",
-            width: { lg: "80%", sm: "100%", xs: "100%" },
-            height: { lg: "100vh", sm: "100%", xs: "100%" },
+            width: { lg: "90%", sm: "100%", xs: "100%" },
+            // height: { lg: "100vh", sm: "100%", xs: "100%" },
           }}
         >
           {/* Welcome Box */}
@@ -411,6 +429,7 @@ export const Home = () => {
               alignItems: "center",
               gap: "1rem",
               width: "100%",
+              flexWrap: "wrap",
             }}
           >
             <Box
@@ -425,6 +444,20 @@ export const Home = () => {
               }}
               className="glassmorphism"
             >
+              <Typography
+                variant="h6"
+                color="secondary"
+                sx={{
+                  fontWeight: "bold",
+                  display: "flex",
+                  marginTop: "1rem",
+                  gap: "1rem",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                Activity <AutoGraphOutlined />
+              </Typography>
               <Box
                 sx={{
                   display: "flex",
@@ -447,15 +480,24 @@ export const Home = () => {
                   padding: "0.5rem",
                 }}
               >
-                <Typography variant="h6" sx={{ color: "#fff" }}>
-                  Activity
-                </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ color: "#fff", textAlign: "center" }}
+                  sx={{
+                    color: "#fff",
+                    textAlign: "center",
+                    paddingBottom: "1rem",
+                  }}
                 >
-                  Track your activity and see your progress over time.
+                  You are{" "}
+                  <span style={{ color: "#F15C26" }}>{cookiesPercentage}%</span>{" "}
+                  away from having another Cookie! Perform an excerise to
+                  increase that number faster now!
                 </Typography>
+                <Link to="/workout" className="link">
+                  <Button variant="contained" color="secondary">
+                    Get more Closer!!!
+                  </Button>
+                </Link>
               </Box>
             </Box>
             {weight.length === 0 || goalWeight.length === 0 ? (
@@ -470,6 +512,7 @@ export const Home = () => {
                   alignItems: "center",
                   borderRadius: "24px",
                   padding: "0.5rem",
+                  gap: "1rem",
                 }}
               >
                 Please fill the measuremnet form to get your analysis
@@ -484,22 +527,26 @@ export const Home = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "center",
+                  justifyContent: "space-around",
                   alignItems: "center",
                   maxWidth: { lg: "300px", sm: "300px", xs: "100%" },
                   width: "100%",
                   borderRadius: "24px",
+                  padding: "1rem",
                 }}
                 className="glassmorphism"
               >
+                <Typography variant="h5" color="secondary">
+                  Your Progress <DonutLargeOutlined />
+                </Typography>
                 <Box
                   sx={{
                     display: "flex",
-
+                    flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
                     width: "100%",
-                    padding: "1rem",
+                    padding: "0.7rem",
                   }}
                 >
                   <Pie
@@ -527,28 +574,40 @@ export const Home = () => {
                     color: "#fff",
                     padding: "1rem",
                     textAlign: "center",
+                    fontSize: "1.2rem",
                   }}
                 >
-                  You have accomplished {percentageWeight.toFixed(2)}% of your
-                  goal
+                  You have accomplished{" "}
+                  <span style={{ color: "#F15C26" }}>
+                    {percentageWeight.toFixed(2)}%
+                  </span>{" "}
+                  of your goal
                 </Typography>
+                <Link to="/workout" className="link">
+                  <Button variant="contained" color="secondary">
+                    Burn more 🔥
+                  </Button>
+                </Link>
               </Box>
             )}
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
                 maxWidth: { lg: "300px", sm: "300px", xs: "100%" },
                 width: "100%",
                 borderRadius: "24px",
+                maxHeight: { lg: "500px", sm: "300px", xs: "100%" },
                 height: "100%",
-                maxHeight: { lg: "300px", sm: "300px", xs: "100%" },
                 padding: "1rem",
               }}
               className="glassmorphism"
             >
+              <Typography variant="h5" color="secondary">
+                Motivation Check <EmojiEmotionsOutlined />
+              </Typography>
               <Box
                 sx={{
                   display: "flex",
@@ -577,8 +636,145 @@ export const Home = () => {
             </Box>
           </Box>
           {/* Graph Box */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: {
+                lg: "space-between",
+                sm: "center",
+                xs: "center",
+              },
+              alignItems: "center",
+              gap: "1rem",
+              marginTop: "2rem",
+              width: { lg: "100%", sm: "100%", xs: "100%" },
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "1rem",
+                width: { lg: "100%", sm: "100%", xs: "100%" },
+                borderRadius: "24px",
+                padding: "1rem",
+              }}
+              className="glassmorphism"
+            >
+              <Box>
+                <Typography variant="h5" color="secondary">
+                  Checklist before you Kick off !
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: { lg: "100%", sm: "50%", xs: "100%" },
+                  flexDirection: { lg: "row", sm: "column", xs: "column" },
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: { lg: "60%", sm: "60%", xs: "100%" },
+                  }}
+                >
+                  <img src={reminderImgURL} alt="reminder" width="100%" />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    width: "100%",
+                    gap: "1rem",
+                  }}
+                >
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Water"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Towel"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Yoga Mat"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Dumble"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Headphones"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                  <Chip
+                    icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
+                    label="Motivation"
+                    variant="outlined"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        {/* 2 Column */}
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: { lg: "space-around", xs: "center" },
+            alignItems: "center",
+            width: { lg: "40%", sm: "80%", xs: "100%" },
+            padding: "1rem",
+            // height: { lg: "100vh", sm: "100%", xs: "100%" },
+          }}
+        >
           {weight.length === 0 || goalWeight.length === 0 ? (
-            <Typography variant="h6" color="secondary">
+            <Typography
+              variant="h6"
+              color="secondary"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
               Please fill the measuremnet form to get your analysis
               <Link to="/bm" className="link">
                 <Button variant="contained" color="secondary">
@@ -590,11 +786,11 @@ export const Home = () => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { lg: "row", sm: "column", xs: "column" },
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 gap: "2rem",
-                width: "100%",
+
                 borderRadius: "24px",
               }}
             >
@@ -605,24 +801,67 @@ export const Home = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "1rem",
-                  width: { lg: "50%", sm: "80%", xs: "100%" },
+                  width: { lg: "100%", sm: "100%", xs: "80%" },
                   borderRadius: "24px",
+                  background: "#fff",
+                  color: "#00040f",
+                  padding: "1rem",
                 }}
                 className="glassmorphism"
               >
-                <Line
-                  data={weightLineGraphData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: {
-                        display: true,
-                        position: "top",
-                      },
-                    },
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "1rem",
+                    width: { lg: "100%", sm: "100%", xs: "100%" },
+                    borderRadius: "24px",
+                    background: "#fff",
+                    color: "#00040f",
+                    padding: "1rem",
                   }}
-                />
+                >
+                  <Line
+                    data={weightLineGraphData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        x: {
+                          ticks: {
+                            font: {
+                              size: 15,
+                              color: "#00040f",
+                            },
+                          },
+                        },
+                        y: {
+                          ticks: {
+                            font: {
+                              size: 15,
+                              color: "#00040f",
+                            },
+                          },
+                        },
+                      },
+                      plugins: {
+                        legend: {
+                          display: true,
+                          position: "top",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+                <Typography
+                  variant="body1"
+                  color="primary"
+                  sx={{ textAlign: "center" }}
+                >
+                  Discover your body's story with our easy-to-use BMI checker
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -631,177 +870,142 @@ export const Home = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "1rem",
-                  width: { lg: "50%", sm: "80%", xs: "100%" },
+                  width: { lg: "100%", sm: "100%", xs: "80%" },
                   borderRadius: "24px",
+                  background: "#fff",
+                  color: "#00040f",
+                  padding: "1rem",
                 }}
                 className="glassmorphism"
               >
-                <Line
-                  data={bmiLineGraphData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-
-                    plugins: {
-                      legend: {
-                        display: true,
-                        position: "top",
-                      },
-                    },
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "1rem",
+                    width: { lg: "100%", sm: "100%", xs: "100%" },
+                    borderRadius: "24px",
+                    background: "#fff",
+                    color: "#00040f",
+                    padding: "1rem",
                   }}
-                />
+                >
+                  <Line
+                    data={bmiLineGraphData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        x: {
+                          ticks: {
+                            font: {
+                              size: 15,
+                              color: "#00040f",
+                            },
+                          },
+                        },
+                        y: {
+                          ticks: {
+                            font: {
+                              size: 15,
+                              color: "#00040f",
+                            },
+                          },
+                        },
+                      },
+                      plugins: {
+                        legend: {
+                          display: true,
+                          position: "top",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+                <Typography
+                  variant="body1"
+                  color="primary"
+                  sx={{ textAlign: "center" }}
+                >
+                  Track your weight changes with us and celebrate every
+                  milestone along the way!
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  // flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "1rem",
+                  width: { lg: "100%", sm: "100%", xs: "80%" },
+                  backgroundColor: "#ffff",
+                  borderRadius: "24px",
+                  padding: "1rem",
+                  flexDirection: "column",
+                }}
+                className="glassmorphism"
+              >
+                <Typography variant="h5" color="primary">
+                  Popular Excerise of the week
+                </Typography>
+                <Box
+                  sx={{
+                    width: { lg: "100%", xs: "100%" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: { lg: "50%", xs: "100%" },
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img src={popular} alt="popular" width="100%" />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                      gap: "0.5rem",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography variant="h6" color="primary">
+                      {favExcerise === "" ? (
+                        "Refresh after some time"
+                      ) : (
+                        <Typography variant="body1" color="primary">
+                          Congratulations on making{" "}
+                          <span
+                            style={{ color: "#F15C26", fontWeight: "bold" }}
+                          >
+                            {favExcerise}
+                          </span>{" "}
+                          your go-to workout - your dedication and hard work are
+                          truly inspiring!
+                        </Typography>
+                      )}
+                    </Typography>
+                    <Link to="/workout">
+                      <Button variant="contained" color="primary">
+                        Start
+                      </Button>
+                    </Link>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           )}
-        </Box>
-        {/* 2 Column */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: { lg: "space-between", sm: "center", xs: "center" },
-            alignItems: "center",
-            gap: "1rem",
-            marginTop: "2rem",
-            width: { lg: "40%", sm: "80%", xs: "100%" },
-            height: { lg: "100vh", sm: "100vh", xs: "100%" },
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "1rem",
-              width: "100%",
-              borderRadius: "24px",
-              padding: "1rem",
-            }}
-            className="glassmorphism"
-          >
-            <Box>
-              <Typography variant="h5" color="secondary">
-                Checklist before you Kick off !
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "50%",
-              }}
-            >
-              <img src={reminderImgURL} alt="reminder" width="100%" />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexWrap: "wrap",
-                width: "100%",
-                gap: "1rem",
-              }}
-            >
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Water"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Towel"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Yoga Mat"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Dumble"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Headphones"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-              <Chip
-                icon={<Checkbox color="success" sx={{ color: "#fff" }} />}
-                label="Motivation"
-                variant="outlined"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-            </Box>
-            <Box></Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "1rem",
-              width: "100%",
-              backgroundColor: "#ffff",
-              borderRadius: "24px",
-              padding: "1rem",
-            }}
-          >
-            <Typography variant="h5" color="primary">
-              Popular Excerise of the week
-            </Typography>
-            <Box
-              sx={{
-                width: "30%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <img src={popular} alt="popular" width="100%" />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                gap: "0.5rem",
-                flexDirection: "column",
-              }}
-            >
-              <Typography variant="h6" color="primary">
-                {favExcerise === "" ? "Refresh after some time" : favExcerise}
-              </Typography>
-              <Link to="/workout">
-                <Button variant="contained" color="primary">
-                  Start
-                </Button>
-              </Link>
-            </Box>
-          </Box>
         </Box>
       </Container>
     </>

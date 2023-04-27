@@ -17,10 +17,10 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { logout } from "../../firebase";
-
+import CookieIcon from "@mui/icons-material/Cookie";
 const drawerWidth = `100%`;
 
-const HomeHeader = () => {
+const HomeHeader = ({ props }) => {
   const navigate = useNavigate();
   const handleClick = () => {
     logout();

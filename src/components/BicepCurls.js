@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pose } from "@mediapipe/pose";
 import * as cam from "@mediapipe/camera_utils";
 import Webcam from "react-webcam";
@@ -286,6 +286,7 @@ const BicepCurls = () => {
     const endTimeVar = new Date();
     const endTimeStamp = endTimeVar.getSeconds();
     const timeSpent = endTimeStamp - startTimeStamp;
+
     const repsCounter = setDoc(docRef, {
       reps: count,
       exceriseName: "Biceps",

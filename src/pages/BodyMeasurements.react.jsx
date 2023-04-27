@@ -22,16 +22,7 @@ const BodyMeasurements = () => {
   const navigate = useNavigate();
   const uid = Cookies.get("userID");
   const userData = Cookies.get("profile");
-  if (userData === undefined) {
-    // alert("Please Login");
-    navigate("/login");
-  }
 
-  // // console.log(userObject);
-  if (!Cookies.get("userID")) {
-    alert("Please Login");
-    navigate("/");
-  }
   const [weight, setWeight] = useState("");
   const [weightGoal, setWeightGoal] = useState("");
   const [height, setHeight] = useState("");

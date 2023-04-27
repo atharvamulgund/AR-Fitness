@@ -23,7 +23,7 @@ import Diet from "./pages/Diet.react";
 import BicepCurls from "./components/BicepCurls";
 import PushUps from "./components/PushUps";
 import Squats from "./components/Squats";
-import Cookies from "js-cookie";
+
 import BodyMeasurmnets from "./pages/BodyMeasurements.react";
 
 function App() {
